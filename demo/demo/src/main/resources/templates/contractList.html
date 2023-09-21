@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https:thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{../static/assets/css/styles.min.css}" />
+</head>
+<body>
+<h1>Customer List</h1>
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+            <div class="brand-logo d-flex align-items-center justify-content-between">
+                <a th:href="@{/}" class="text-nowrap logo-img mb-0">
+                    <h1>S D W</h1>
+                </a>
+                <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                    <i class="ti ti-x fs-8"></i>
+                </div>
+            </div>
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                <ul id="sidebarnav">
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Home</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" th:href="@{/}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">UI COMPONENTS</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" th:href=@{/customerList} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                            <span class="hide-menu">Customer List</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" th:href=@{/contractList} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                            <span class="hide-menu">Contract List</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" th:href=@{/apartmentList} aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                            <span class="hide-menu">Apartment List</span>
+                        </a>
+                    </li>
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">AUTH</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="login.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-login"></i>
+                </span>
+                            <span class="hide-menu">Login</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-plus"></i>
+                </span>
+                            <span class="hide-menu">Register</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <div class="body-wrapper">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Apartment</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contract : ${data}">
+                <td th:text="${contract.id}">ID</td>
+                <td th:text="${contract.customer.ID}">First Name</td>
+                <td th:text="${contract.apartment.id}">Last Name</td>
+                <td th:text="${contract.StartDate}">Age</td>
+                <td th:text="${contract.EndDate}">Status</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
