@@ -3,6 +3,7 @@ package com.example.demo.helper;
 import com.example.demo.model.Apartment;
 import com.example.demo.model.Contact;
 import com.example.demo.model.Customer;
+import com.example.demo.repository.ContactRepository;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.ApartmentRepository;
 import com.example.demo.service.ApartmentService;
@@ -19,21 +20,21 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CSVHelper {
     @Autowired
-    static CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
     @Autowired
-    static ApartmentRepository apartmentRepository;
+    ContactRepository contactRepository;
+
+    @Autowired
+    ApartmentRepository apartmentRepository;
+
     public static String TYPE = "text/csv";
 
-    @Autowired
-    ApartmentService apartmentService;
-
-    @Autowired
-    CustomerService customerService;
     public static boolean hasCSVFormat(MultipartFile file) {
 
         if (!TYPE.equals(file.getContentType())) {
@@ -43,7 +44,7 @@ public class CSVHelper {
         return true;
     }
 
-    public static List<Customer> addCustomer(InputStream is) {
+    public List<Customer> addCustomer(InputStream is ) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
@@ -52,17 +53,20 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-
-                    Customer customer = new Customer(
-                            csvRecord.get(0),
-                            csvRecord.get("FirstName"),
-                            csvRecord.get("LastName"),
-                            csvRecord.get("Address"),
-                            Integer.parseInt(csvRecord.get("Age")),
-                            csvRecord.get("Status")
-                    );
-
-                    tutorials.add(customer);
+                String id = csvRecord.get(0);
+                Optional<Customer> existingCustomer = customerRepository.findById(id);
+                System.out.println(existingCustomer);
+                    if (id!=null && existingCustomer.isEmpty()){
+                        Customer customer = new Customer(
+                                csvRecord.get(0),
+                                csvRecord.get("FirstName"),
+                                csvRecord.get("LastName"),
+                                csvRecord.get("Address"),
+                                Integer.parseInt(csvRecord.get("Age")),
+                                csvRecord.get("Status")
+                        );
+                        tutorials.add(customer);
+                    }
             }
 
             return tutorials;
@@ -128,25 +132,28 @@ public class CSVHelper {
 //            }
 
             for (CSVRecord csvRecord : csvRecords) {
+                String id = csvRecord.get(0);
+                Optional<Contact> existingContact = contactRepository.findById(id);
                 String apartmentID = csvRecord.get("Apartment");
                 String customerID = csvRecord.get("CustomerID");
                 LocalDate StartDate = LocalDate.parse(csvRecord.get("StartDate"));
                 LocalDate EndDate = LocalDate.parse(csvRecord.get("EndDate"));
 
                 try {
-                    Customer customer = customerService.findById(customerID);
-                    Apartment apartment = apartmentService.findById(apartmentID);
+                    Customer customer = customerRepository.findById(customerID).orElse(null);
+                    Apartment apartment = apartmentRepository.findById(apartmentID).orElse(null);
 
                     if (customer != null && apartment != null) {
-                        Contact contact = Contact.builder()
-                                .id(csvRecord.get(0))
-                                .customer(customer)
-                                .apartment(apartment)
-                                .StartDate(StartDate)
-                                .EndDate(EndDate)
-                                .build();
-
-                        list.add(contact);
+                        if (existingContact.isEmpty()){
+                            Contact contact = Contact.builder()
+                                    .id(csvRecord.get(0))
+                                    .customer(customer)
+                                    .apartment(apartment)
+                                    .StartDate(StartDate)
+                                    .EndDate(EndDate)
+                                    .build();
+                            list.add(contact);
+                        }
                     } else {
                         System.out.println("Customer or apartment not found for IDs: " + customerID + ", " + apartmentID);
                     }
@@ -162,7 +169,7 @@ public class CSVHelper {
         }
     }
 
-    public static List<Apartment> addApartment(InputStream is) {
+    public List<Apartment> addApartment(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
@@ -172,13 +179,17 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-                Apartment apartment = new Apartment(
-                        csvRecord.get(0),
-                        csvRecord.get("Address"),
-                        Integer.parseInt(csvRecord.get("RentalPrice")),
-                        Integer.parseInt(csvRecord.get("NumberOfRoom"))
-                );
-                list.add(apartment);
+                String id = csvRecord.get(0);
+                Optional<Apartment> existingApartment = apartmentRepository.findById(id);
+                if (existingApartment.isEmpty()){
+                    Apartment apartment = new Apartment(
+                            csvRecord.get(0),
+                            csvRecord.get("Address"),
+                            Integer.parseInt(csvRecord.get("RentalPrice")),
+                            Integer.parseInt(csvRecord.get("NumberOfRoom"))
+                    );
+                    list.add(apartment);
+                }
             }
 
             return list;

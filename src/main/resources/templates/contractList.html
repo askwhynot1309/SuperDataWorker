@@ -102,18 +102,19 @@
                 <th>End Date</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="contract : ${data}">
-                <td th:text="${contract.id}">ID</td>
-                <td th:text="${contract.customer.ID}">First Name</td>
-                <td th:text="${contract.apartment.id}">Last Name</td>
-                <td th:text="${contract.StartDate}">Age</td>
-                <td th:text="${contract.EndDate}">Status</td>
-            </tr>
+            <tbody id="contactTableBody">
+<!--            <tr th:each="contract : ${data}">-->
+<!--                <td th:text="${contract.id}">ID</td>-->
+<!--                <td th:text="${contract.customer.ID}">First Name</td>-->
+<!--                <td th:text="${contract.apartment.id}">Last Name</td>-->
+<!--                <td th:text="${contract.StartDate}">Age</td>-->
+<!--                <td th:text="${contract.EndDate}">Status</td>-->
+<!--            </tr>-->
             </tbody>
         </table>
     </div>
 </div>
+<script src="../static/assets/js/contact.js"></script>
 
 </body>
 </html>

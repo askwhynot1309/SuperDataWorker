@@ -101,17 +101,17 @@
                 <th>Number of room</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="apartment : ${data}">
-                <td th:text="${apartment.id}">ID</td>
-                <td th:text="${apartment.address}">Address</td>
-                <td th:text="${apartment.RentalPrice}">Rental Price</td>
-                <td th:text="${apartment.numberOfRoom}">Number of Room</td>
-            </tr>
+            <tbody id="apartmentTableBody">
+<!--            <tr th:each="apartment : ${data}">-->
+<!--                <td th:text="${apartment.id}">ID</td>-->
+<!--                <td th:text="${apartment.address}">Address</td>-->
+<!--                <td th:text="${apartment.RentalPrice}">Rental Price</td>-->
+<!--                <td th:text="${apartment.numberOfRoom}">Number of Room</td>-->
+<!--            </tr>-->
             </tbody>
         </table>
     </div>
 </div>
-
+<script src="../static/assets/js/apartment.js"></script>
 </body>
 </html>

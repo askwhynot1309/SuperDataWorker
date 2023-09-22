@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +23,9 @@ public class ContactService {
     private ApartmentService apartmentService;
 
     @Autowired
+    ContactRepository contactRepository;
+
+    @Autowired
     CSVHelper csvHelper;
 
     public void save(MultipartFile file) {
@@ -34,7 +38,8 @@ public class ContactService {
     }
 
     public List<Contact> getAllContact() {
-        return repository.findAll();
+        List<Contact> listContract = new ArrayList<>();
+        listContract = contactRepository.findAll();
+        return listContract;
     }
-
 }

@@ -16,10 +16,12 @@ public class ApartmentService {
     @Autowired
     ApartmentRepository apartmentRepository;
 
+    @Autowired
+    CSVHelper csvHelper;
 
     public void save(MultipartFile file) {
         try {
-            List<Apartment> apartment= CSVHelper.addApartment(file.getInputStream());
+            List<Apartment> apartment= csvHelper.addApartment(file.getInputStream());
             apartmentRepository.saveAll(apartment);
         } catch (IOException e) {
             throw new RuntimeException("fail to store csv data: " + e.getMessage());

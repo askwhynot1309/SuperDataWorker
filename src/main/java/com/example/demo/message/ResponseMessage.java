@@ -10,14 +10,10 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ResponseMessage {
     private String message;
     private Object data;
     private int code;
 
-    public ResponseMessage(String message, Object data, int code) {
-        this.message = message;
-        this.data = data;
-        this.code = code;
-    }
 }

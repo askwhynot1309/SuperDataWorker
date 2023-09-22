@@ -17,19 +17,20 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIgnoreProperties(value = { "customer", "apartment" }, allowSetters = true)
 public class Contact {
     @Id
     @Column(name = "id", nullable = false, length = 45)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "apartment_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Apartment apartment;
 
     private LocalDate StartDate;
